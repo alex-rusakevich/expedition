@@ -14,7 +14,7 @@ def main():
         description="Expedition: the Pascal package manager"
     )
     parser.add_argument(
-        "--version", "-v", help="print version and exit", action="store_true"
+        "-v", "--version", help="print version and exit", action="store_true"
     )
 
     subparsers = parser.add_subparsers()
@@ -24,6 +24,12 @@ def main():
 
     del_subp = subparsers.add_parser("del", help="delete all the expedition files")
     del_subp.set_defaults(func=expedition.commands.del_command)
+    del_subp.add_argument(
+        "-f",
+        "--force",
+        action="store_true",
+        help="don't ask for permission before deleting",
+    )
 
     build_subp = subparsers.add_parser("build", help="build an artifact .art file")
     build_subp.set_defaults(func=expedition.commands.build_command)

@@ -11,7 +11,7 @@ def del_command(args: Namespace):
         print("The expedition manifest file does not exist, stopping...")
         return
 
-    is_sure = (
+    is_sure = args.force or (
         ask_for(
             "Warning: you are about to delete all the expedition files! Are you sure?",
             "no",
@@ -25,6 +25,8 @@ def del_command(args: Namespace):
         return
 
     os.remove(MANIFEST_FILE_PATH)
-    shutil.rmtree(PASCAL_MODULES_DIR)
+
+    if os.path.exists(PASCAL_MODULES_DIR):
+        shutil.rmtree(PASCAL_MODULES_DIR)
 
     print("The expedition files where removed successfully!")
