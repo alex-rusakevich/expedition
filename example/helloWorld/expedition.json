@@ -1,20 +1,21 @@
 {
-    "artifact": {
-        "name": "helloWorld",
-        "version": "0.0.1",
-        "repo": ""
-    },
-    "requirements": {
-        "platform": "any",
-        "machine": "any",
-        "compiler": {
-            "name": "freepascal",
-            "min_version": "3.0.0",
-            "max_version": null
-        }
-    },
-    "dependencies": {
-        "prod": [],
-        "dev": []
+  "artifact": {
+    "name": "helloWorld",
+    "version": "0.0.1",
+    "description": "A simple hello world artifact",
+    "author": "Alexander Rusakevich"
+  },
+  "requirements": {
+    "platform": "any",
+    "machine": "any",
+    "compiler": {
+      "name": "freepascal",
+      "min_version": null,
+      "max_version": null
     }
+  },
+  "dependencies": {
+    "prod": [],
+    "dev": []
+  }
 }
