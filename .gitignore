@@ -1,0 +1,8 @@
+pascal_modules/
+build/
+.venv/
+__pycache__/
+
+*.o
+*.exe
+.python-version
