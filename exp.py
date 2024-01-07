@@ -41,6 +41,14 @@ def main():
         default="build/",
     )
 
+    install_subp = subparsers.add_parser("install", help="install an artifact")
+    install_subp.set_defaults(func=expedition.commands.install_command)
+
+    unitpath_subp = subparsers.add_parser(
+        "unitpath", help="generate unitpath for all the modules installed"
+    )
+    unitpath_subp.set_defaults(func=expedition.commands.unitpath_command)
+
     args = parser.parse_args()
 
     if args.version:

@@ -23,7 +23,7 @@ def init_command(args: Namespace):
                 "version": None,
             },
         },
-        "dependencies": {"prod": [], "dev": []},
+        "dependencies": {"common": {}, "dev": {}},
     }
 
     assert not os.path.exists(

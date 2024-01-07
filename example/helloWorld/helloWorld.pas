@@ -1,15 +1,7 @@
-unit helloWorld;
+program helloWorld;
 
-interface
-
-procedure hello_world();
-
-implementation
-
-procedure hello_world();
-begin
-    writeln('Hello, World!');
-end;
+uses pasHelloWorld;
 
 begin
+    hello_world();
 end.

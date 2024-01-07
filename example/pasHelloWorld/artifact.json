@@ -1,8 +1,8 @@
 {
   "artifact": {
-    "name": "helloWorld",
+    "name": "pasHelloWorld",
     "version": "0.0.1",
-    "description": "An app using the libHelloWorld as a module",
+    "description": "A simple hello world artifact",
     "author": "Alexander Rusakevich"
   },
   "requirements": {
@@ -14,9 +14,7 @@
     }
   },
   "dependencies": {
-    "common": {
-      "pasHelloWorld": "file:///../pasHelloWorld/build/helloWorld-0.0.1-any-any-freepascal-gte3.0.0.art"
-    },
+    "common": {},
     "dev": {}
   }
 }
