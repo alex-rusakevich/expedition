@@ -25,13 +25,23 @@ def main():
     del_subp = subparsers.add_parser("del", help="delete all the expedition files")
     del_subp.set_defaults(func=expedition.commands.del_command)
 
+    build_subp = subparsers.add_parser("build", help="build an artifact .art file")
+    build_subp.set_defaults(func=expedition.commands.build_command)
+    build_subp.add_argument(
+        "-o",
+        "--output-dir",
+        type=str,
+        help="the directory for resulting .art file",
+        default="build/",
+    )
+
     args = parser.parse_args()
 
     if args.version:
         print(expedition.__version__)
         sys.exit()
 
-    args.func()
+    args.func(args)
 
 
 if __name__ == "__main__":
