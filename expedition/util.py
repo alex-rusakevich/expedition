@@ -29,7 +29,7 @@ def ask_for(label: str, default: Optional[str] = None, options: Sequence[str] = 
 
 
 def is_version_suitable(available_version: str, expected_version: str) -> bool:
-    """Check if available version suits expected version condition. Uses Pascal-style signs
+    """Check if available version suits expected version condition. Uses Pascal-style comparison signs
 
     Example:
 
@@ -77,3 +77,40 @@ def is_version_suitable(available_version: str, expected_version: str) -> bool:
         return available_version >= version_right
     elif cmd_val == ">=":
         return available_version >= version_right
+
+
+def comp_sign_to_latin(version_cond: str, vice_versa=False) -> str:
+    """Convert comparison signs on the beginning of version str to their latin equivalent (and back).
+    Uses Pascal-style signs
+
+    Example:
+
+    ```python
+        cond_to_latin("<0.0.2") # => "lt0.0.2"
+        cond_to_latin("ne0.0.1", True) # => "<>0.0.1"
+    ```
+
+    :param version_cond: string with version condition, e.g. `>=0.0.1`
+    :type version_cond: str
+    :param vice_versa: should latin letters be converted back to condition marks?, defaults to False
+    :type vice_versa: bool, optional
+    :return: processed string
+    :rtype: str
+    """
+    marks = {"<=": "lte", ">=": "gte", "<": "lt", ">": "gt", "<>": "ne", "=": ""}
+
+    if vice_versa:
+        version_cond = re.sub(r"^eq", "", version_cond, 1)
+
+    for k, v in marks.items():
+        if not vice_versa:
+            if k in version_cond:
+                version_cond = re.sub(r"^" + k, v, version_cond, 1)
+                break
+        else:
+            if v in version_cond:
+                if v != "":
+                    version_cond = re.sub(r"^" + v, k, version_cond, 1)
+                break
+
+    return version_cond

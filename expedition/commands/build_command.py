@@ -39,13 +39,6 @@ def build_command(args: Namespace):
 
         return False
 
-    def replace_version_marks(version_cond: str) -> str:
-        marks = {"<": "lt", "<=": "lte", ">=": "gte", ">": "gt", "=": "", "<>": "ne"}
-        for k, v in marks.items():
-            version_cond = version_cond.replace(k, v, 1)
-
-        return version_cond
-
     if not os.path.exists(MANIFEST_FILE_PATH):
         print("The expedition manifest file does not exist, stopping...")
         return
@@ -61,7 +54,7 @@ def build_command(args: Namespace):
             platform=expedition_file["requirements"]["platform"],
             machine=expedition_file["requirements"]["machine"],
             compiler=expedition_file["requirements"]["compiler"]["name"],
-            comp_ver=replace_version_marks(
+            comp_ver=comp_sign_to_latin(
                 str(expedition_file["requirements"]["compiler"]["version"])
             ),
         )
