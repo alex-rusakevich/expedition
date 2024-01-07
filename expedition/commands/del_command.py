@@ -7,7 +7,7 @@ from expedition.util import *
 
 
 def del_command(args: Namespace):
-    if not os.path.exists(EXPEDITION_FILE_PATH):
+    if not os.path.exists(MANIFEST_FILE_PATH):
         print("The expedition manifest file does not exist, stopping...")
         return
 
@@ -24,7 +24,7 @@ def del_command(args: Namespace):
         print("Stopping...")
         return
 
-    os.remove(EXPEDITION_FILE_PATH)
+    os.remove(MANIFEST_FILE_PATH)
     shutil.rmtree(PASCAL_MODULES_DIR)
 
     print("The expedition files where removed successfully!")

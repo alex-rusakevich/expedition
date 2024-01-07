@@ -20,15 +20,14 @@ def init_command(args: Namespace):
             "machine": "any",
             "compiler": {
                 "name": "freepascal",
-                "min_version": None,
-                "max_version": None,
+                "version": None,
             },
         },
         "dependencies": {"prod": [], "dev": []},
     }
 
     assert not os.path.exists(
-        EXPEDITION_FILE_PATH
+        MANIFEST_FILE_PATH
     ), "Cannot init an artifact: it was initialized already. \
 Run `exp del` to remove all the expedition's files"
 
@@ -47,11 +46,11 @@ Run `exp del` to remove all the expedition's files"
         "freepascal",
         AVAILABLE_COMPILERS,
     )
-    basic_file["requirements"]["compiler"]["min_version"] = ask_for(
-        "Minimal compiler version", None
+    basic_file["requirements"]["compiler"]["version"] = ask_for(
+        "Compiler version", None
     )
 
-    json.dump(basic_file, open(EXPEDITION_FILE_PATH, "w", encoding="utf-8"), indent=2)
+    json.dump(basic_file, open(MANIFEST_FILE_PATH, "w", encoding="utf-8"), indent=2)
     pathlib.Path(PASCAL_MODULES_DIR).mkdir(exist_ok=True)
 
     print("Initialized the config successfully!")

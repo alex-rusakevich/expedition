@@ -10,8 +10,7 @@
     "machine": "any",
     "compiler": {
       "name": "freepascal",
-      "min_version": null,
-      "max_version": null
+      "version": ">=3.0.0"
     }
   },
   "dependencies": {

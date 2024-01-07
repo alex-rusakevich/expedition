@@ -39,22 +39,32 @@ def build_command(args: Namespace):
 
         return False
 
-    if not os.path.exists(EXPEDITION_FILE_PATH):
+    def replace_version_marks(version_cond: str) -> str:
+        marks = {"<": "lt", "<=": "lte", ">=": "gte", ">": "gt", "=": "", "<>": "ne"}
+        for k, v in marks.items():
+            version_cond = version_cond.replace(k, v, 1)
+
+        return version_cond
+
+    if not os.path.exists(MANIFEST_FILE_PATH):
         print("The expedition manifest file does not exist, stopping...")
         return
 
     print("The building process has begun...")
     time_start = time.time()
 
-    expedition_file = json.load(open(EXPEDITION_FILE_PATH, "r", encoding="utf-8"))
-    output_file_path = "{name}-{version}-{platform}-{machine}-{compiler}-{comp_min_ver}-{comp_max_ver}.art".format(
-        name=expedition_file["artifact"]["name"],
-        version=expedition_file["artifact"]["version"],
-        platform=expedition_file["requirements"]["platform"],
-        machine=expedition_file["requirements"]["machine"],
-        compiler=expedition_file["requirements"]["compiler"]["name"],
-        comp_min_ver=expedition_file["requirements"]["compiler"]["min_version"],
-        comp_max_ver=expedition_file["requirements"]["compiler"]["max_version"],
+    expedition_file = json.load(open(MANIFEST_FILE_PATH, "r", encoding="utf-8"))
+    output_file_path = (
+        "{name}-{version}-{platform}-{machine}-{compiler}-{comp_ver}.art".format(
+            name=expedition_file["artifact"]["name"],
+            version=expedition_file["artifact"]["version"],
+            platform=expedition_file["requirements"]["platform"],
+            machine=expedition_file["requirements"]["machine"],
+            compiler=expedition_file["requirements"]["compiler"]["name"],
+            comp_ver=replace_version_marks(
+                str(expedition_file["requirements"]["compiler"]["version"])
+            ),
+        )
     )
 
     pathlib.Path(args.output_dir).mkdir(parents=True, exist_ok=True)
