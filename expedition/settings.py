@@ -17,6 +17,7 @@ MANIFEST_FILE_PATH = "./artifact.json"
 PASCAL_MODULES_DIR = "./pascal_modules"
 
 REPO_URL = "https://raw.githubusercontent.com/alex-rusakevich/archaelogical/main/"
+CHUNK_SIZE = 1
 
 AVAILABLE_COMPILERS = {}
 
@@ -54,16 +55,24 @@ CACHE_DIR: Path = Path(os.path.join(BASE_DIR, "cache"))
 # region Process local pkgset manifest
 LOCAL_PKG_SET_MANIFEST = None
 
-if os.path.exists(CACHE_DIR / "manifest.json") and os.path.isfile(
-    CACHE_DIR / "manifest.json"
-):
-    LOCAL_PKG_SET_MANIFEST = json.load(
-        open(CACHE_DIR / "manifest.json", "r", encoding="utf8")
-    )
-else:
-    raise FileNotFoundError(
-        "Unable to find local package set manifest (cache/manifest.json). Did you run `exp update`?"
-    )
+
+def get_local_pkg_set_manifest():
+    global LOCAL_PKG_SET_MANIFEST
+
+    if os.path.exists(CACHE_DIR / "manifest.json") and os.path.isfile(
+        CACHE_DIR / "manifest.json"
+    ):
+        LOCAL_PKG_SET_MANIFEST = json.load(
+            open(CACHE_DIR / "manifest.json", "r", encoding="utf8")
+        )
+    else:
+        raise FileNotFoundError(
+            "Unable to find local package set manifest (cache/manifest.json). Did you run `exp update`?"
+        )
+
+    return LOCAL_PKG_SET_MANIFEST
+
+
 # endregion
 
 DEBUG: bool = os.environ.get("EXP_DEBUG", False) in ["t", True, "true"]

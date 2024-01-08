@@ -97,7 +97,7 @@ def install_command(args: Namespace):
         )
         manifest = json.load(open(MANIFEST_FILE_PATH, "r", encoding="utf-8"))
 
-        print("Preparing the dependency list...", end=" ")
+        print("Preparing the dependency list...")
         prepare_dependency_list(manifest["dependencies"], args.mode)
         print("Done!", len(dependencies_to_install), "found.")
 

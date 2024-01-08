@@ -1,23 +1,31 @@
+import json
 import os
 from argparse import Namespace
 from urllib.parse import urljoin
 
 import requests
+from alive_progress import alive_bar
 
 from expedition.settings import *
+from expedition.util import *
 
 
 def update_local_pkg_manifest():
-    manifest = requests.get(urljoin(REPO_URL, "manifest.json"))
+    print("Downloading the repo package set manifest...")
 
-    with open(CACHE_DIR / "manifest.json", "w", encoding="utf8") as f:
-        f.write(manifest.text)
+    manif_url = urljoin(REPO_URL, "manifest.json")
+    manif_cache_path = CACHE_DIR / "manifest.json"
+    manif_size = get_file_size(manif_url)
+
+    with alive_bar(int(manif_size / CHUNK_SIZE)) as bar:
+        for _ in download_by_parts(manif_url, manif_cache_path):
+            bar()
 
     with open(CACHE_DIR / "last_modified.txt", "w", encoding="utf8") as f:
         f.write(requests.get(urljoin(REPO_URL, "last_modified.txt")).text)
 
     # region Count statistics
-    manifest_json = manifest.json()
+    manifest_json = json.load(open(manif_cache_path, "r", encoding="utf8"))
 
     packages_num = len(manifest_json["packages"])
     versions_num = sum(len(pkg) for _, pkg in manifest_json["packages"].items())

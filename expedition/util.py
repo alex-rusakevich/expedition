@@ -3,6 +3,11 @@ import re
 from typing import Optional, Sequence
 from urllib.parse import urljoin
 
+import requests
+
+import expedition.settings as es
+from expedition.settings import *
+
 
 def ask_for(label: str, default: Optional[str] = None, options: Sequence[str] = []):
     default_msg = f" (default is '{default}')" if default else ""
@@ -142,3 +147,21 @@ def ver_to_str(version: tuple) -> str:
 
 def joinurls(*urls):
     return urljoin(urls[0], posixpath.join(*urls[1:]))
+
+
+def download_by_parts(url: str, output_path: str) -> int:
+    response = requests.get(url, stream=True)
+
+    if response.status_code != 200:
+        raise Exception(f"Unable to download artifact (code {response.status_code})")
+
+    with open(output_path, "wb") as f:
+        for chunk in response.iter_content(chunk_size=es.CHUNK_SIZE):
+            f.write(chunk)
+            yield es.CHUNK_SIZE
+
+
+def get_file_size(url: str) -> int:
+    head_resp = requests.request("HEAD", url, headers={"Accept-Encoding": "identity"})
+
+    return int(head_resp.headers["content-length"])

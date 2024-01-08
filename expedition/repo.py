@@ -1,7 +1,7 @@
 import os
-from pathlib import Path
 
 import requests
+from alive_progress import alive_bar
 
 from expedition.settings import *
 from expedition.util import *
@@ -21,13 +21,15 @@ def retrieve_package(name: str, ver: str) -> str:
     :return: path to local file
     :rtype: str
     """
-    if not name in LOCAL_PKG_SET_MANIFEST["packages"]:
+    if not name in get_local_pkg_set_manifest()["packages"]:
         raise FileNotFoundError(f"Unknown package name: {name}")
 
     file_cache_path = ""
     file_url = ""
 
-    for pkg_ver, file_short_names in LOCAL_PKG_SET_MANIFEST["packages"][name].items():
+    for pkg_ver, file_short_names in get_local_pkg_set_manifest()["packages"][
+        name
+    ].items():
         if is_version_suitable(pkg_ver, ver):
             for file_short_name in file_short_names:
                 if is_file_short_name_suits(file_short_name):
@@ -50,20 +52,12 @@ def retrieve_package(name: str, ver: str) -> str:
     if not file_cache_path:
         raise FileNotFoundError(f"Unable to find an artifact for '{name}': '{ver}'")
 
-    if os.path.exists(file_cache_path) and os.path.isfile(file_cache_path):
-        return file_cache_path
-    else:
-        art_file = requests.get(file_url)
-        print(file_url)
+    if not (os.path.exists(file_cache_path) and os.path.isfile(file_cache_path)):
+        file_size = get_file_size(file_url)
+        print(f"Downloading '{file_url}'...")
 
-        if art_file.status_code == 200:
-            Path(os.path.dirname(file_cache_path)).mkdir(parents=True, exist_ok=True)
+        with alive_bar(int(file_size / CHUNK_SIZE)) as bar:
+            for _ in download_by_parts(file_url, file_cache_path):
+                bar()
 
-            with open(file_cache_path, "wb") as file:
-                file.write(art_file.content)
-
-            return file_cache_path
-        else:
-            raise Exception(
-                f"Unable to download artifact (code {art_file.status_code})"
-            )
+    return file_cache_path
