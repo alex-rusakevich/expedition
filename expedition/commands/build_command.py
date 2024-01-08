@@ -12,7 +12,14 @@ from expedition.validator import validate_manifest
 
 
 def build_command(args: Namespace):
-    IGNORED_PATHS = ["pascal_modules/", "*.art", "build/", ".expignore"]
+    IGNORED_PATHS = [
+        "pascal_modules/",
+        "*.art",
+        "build/",
+        ".expignore",
+        ".git/",
+        "node_modules/",
+    ]
 
     # region Loading the file with paths to ignore
     if os.path.exists(".expignore") and os.path.isfile(".expignore"):
