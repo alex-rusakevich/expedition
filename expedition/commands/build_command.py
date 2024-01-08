@@ -17,6 +17,7 @@ def build_command(args: Namespace):
         "*.art",
         "build/",
         ".expignore",
+        ".gitignore",
         ".git/",
         "node_modules/",
     ]
@@ -36,13 +37,16 @@ def build_command(args: Namespace):
     # endregion
 
     def is_path_ignored(path_to_check: str) -> bool:
+        path_to_check = os.path.normpath(path_to_check)
         path_to_check = os.path.abspath(
             os.path.expandvars(os.path.expanduser(path_to_check))
         )
 
         for p in IGNORED_PATHS:
+            p = os.path.normpath(p)
+
             if path_to_check in [os.path.abspath(p) for p in glob.glob(p)]:
-                print(f"Skipping '{path_to_check}'...")
+                # print(f"Skipping '{path_to_check}'...")
                 return True
 
         return False
@@ -83,7 +87,10 @@ def build_command(args: Namespace):
         if dirname == "." and not files:
             continue
 
-        if is_path_ignored(dirname):
+        # print("DIR", dirname, "FILES", files)
+
+        first_part = Path(dirname).parts[0] if dirname != "." else "."
+        if is_path_ignored(dirname) or is_path_ignored(first_part):
             continue
 
         for filename in files:
@@ -92,6 +99,7 @@ def build_command(args: Namespace):
             if is_path_ignored(file_path):
                 continue
 
+            print(f"Adding '{file_path}' to the artifact...")
             zf.write(file_path)
 
     zf.close()
