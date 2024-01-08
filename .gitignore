@@ -4,6 +4,7 @@ build/
 __pycache__/
 dist/
 .expedition/
+node_modules/
 
 *.o
 *.exe
