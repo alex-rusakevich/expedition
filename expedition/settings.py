@@ -15,6 +15,8 @@ load_dotenv("./.env", verbose=True)
 MANIFEST_FILE_PATH = "./artifact.json"
 PASCAL_MODULES_DIR = "./pascal_modules"
 
+REPO_URL = "https://raw.githubusercontent.com/alex-rusakevich/archaelogical/main/"
+
 AVAILABLE_COMPILERS = {}
 
 # region Detect freepascal

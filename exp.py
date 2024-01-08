@@ -23,6 +23,17 @@ def main():
     init_subp = subparsers.add_parser("init", help="initialize and empty artifact")
     init_subp.set_defaults(func=expedition.commands.init_command)
 
+    update_subp = subparsers.add_parser(
+        "update", help="retrieve info about packages from the repo"
+    )
+    update_subp.set_defaults(func=expedition.commands.update_command)
+    update_subp.add_argument(
+        "-f",
+        "--force",
+        action="store_true",
+        help="update the local package set info regardless of last modified time etc",
+    )
+
     del_subp = subparsers.add_parser("del", help="delete all the expedition files")
     del_subp.set_defaults(func=expedition.commands.del_command)
     del_subp.add_argument(

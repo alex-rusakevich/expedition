@@ -1,6 +1,5 @@
 import json
 import os
-import sys
 from argparse import Namespace
 
 from expedition.settings import *
