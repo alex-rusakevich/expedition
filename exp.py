@@ -43,11 +43,33 @@ def main():
 
     install_subp = subparsers.add_parser("install", help="install an artifact")
     install_subp.set_defaults(func=expedition.commands.install_command)
+    install_subp.add_argument(
+        "artifacts",
+        type=str,
+        nargs="*",
+        help="artifact names and versions or `file:///` paths",
+    )
+    install_subp.add_argument(
+        "-m",
+        "--mode",
+        type=str,
+        choices=["dev", "prod"],
+        help="installation mode",
+        default="dev",
+    )
 
     unitpath_subp = subparsers.add_parser(
         "unitpath", help="generate unitpath for all the modules installed"
     )
     unitpath_subp.set_defaults(func=expedition.commands.unitpath_command)
+    unitpath_subp.add_argument(
+        "-m",
+        "--mode",
+        type=str,
+        choices=["dev", "prod"],
+        help="should unitpath include dev dependencies or not",
+        default="dev",
+    )
 
     args = parser.parse_args()
 
@@ -55,7 +77,10 @@ def main():
         print(expedition.__version__)
         sys.exit()
 
-    args.func(args)
+    if hasattr(args, "func"):
+        args.func(args)
+    else:
+        print("Nothing to do, stopping...")
 
 
 if __name__ == "__main__":

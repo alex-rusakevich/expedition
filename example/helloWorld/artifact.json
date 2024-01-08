@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "common": {
-      "pasHelloWorld": "file:///../pasHelloWorld/build/helloWorld-0.0.1-any-any-freepascal-gte3.0.0.art"
+      "pasHelloWorld": "file:///../pasHelloWorld/build/pasHelloWorld-0.0.1-any-any-freepascal-gte3.0.0.art"
     },
     "dev": {}
   }

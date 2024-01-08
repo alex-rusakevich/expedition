@@ -2,8 +2,10 @@ pascal_modules/
 build/
 .venv/
 __pycache__/
+dist/
 
 *.o
 *.exe
 *.ppu
 .python-version
+*.spec
