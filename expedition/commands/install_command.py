@@ -8,6 +8,7 @@ from typing import Literal
 
 from alive_progress import alive_bar
 
+from expedition.repo import *
 from expedition.settings import *
 from expedition.util import *
 from expedition.validator import validate_manifest
@@ -25,16 +26,17 @@ def prepare_dependency_list(dependencies: dict, mode: Literal["dev", "prod"] = "
 
     for name, path_or_ver in arts:
         manifest = {}
+        art_path = ""
 
         if path_or_ver.startswith("file:///"):  # local
             art_path = path_or_ver.replace("file:///", "", 1)
-
-            with zipfile.ZipFile(
-                art_path, "r", compression=zipfile.ZIP_DEFLATED, compresslevel=6
-            ) as file:
-                manifest = json.loads(file.read("artifact.json").decode("utf8"))
         else:  # repo
-            ...
+            art_path = retrieve_package(name, path_or_ver)
+
+        with zipfile.ZipFile(
+            art_path, "r", compression=zipfile.ZIP_DEFLATED, compresslevel=6
+        ) as file:
+            manifest = json.loads(file.read("artifact.json").decode("utf8"))
 
         bisect.insort(dependencies_to_install, (name, path_or_ver))
         prepare_dependency_list(manifest["dependencies"], mode)
@@ -47,12 +49,14 @@ def prepare_dependencies():
     with alive_bar(len(dependencies_to_install)) as bar:
         for i, (name, path_or_ver) in enumerate(dependencies_to_install):
             print(f"Preparing '{name}': '{path_or_ver}'...", end=" ")
+            art_path = ""
 
             if path_or_ver.startswith("file:///"):  # local
                 art_path = path_or_ver.replace("file:///", "", 1)
-                dependencies_to_install[i] = (name, art_path)
             else:  # repo
-                ...
+                art_path = retrieve_package(name, path_or_ver)
+
+            dependencies_to_install[i] = (name, art_path)
 
             print("Done!")
             bar()

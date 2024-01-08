@@ -35,6 +35,8 @@ def update_local_pkg_manifest():
 
 
 def update_command(args: Namespace):
+    print(f"Current repo is '{REPO_URL}'")
+
     if args.force:
         print("Force updating local package set info...")
         update_local_pkg_manifest()

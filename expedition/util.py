@@ -1,5 +1,7 @@
+import posixpath
 import re
-from typing import Iterable, Optional, Sequence
+from typing import Optional, Sequence
+from urllib.parse import urljoin
 
 
 def ask_for(label: str, default: Optional[str] = None, options: Sequence[str] = []):
@@ -136,3 +138,7 @@ def ver_to_str(version: tuple) -> str:
     :rtype: str
     """
     return ".".join(tuple(str(num) for num in version))
+
+
+def joinurls(*urls):
+    return urljoin(urls[0], posixpath.join(*urls[1:]))

@@ -7,10 +7,10 @@ def validate_manifest(manifest: dict):
         platform.system(),
     ), f'incompatible platform: \'{manifest["requirements"]["system"]}\''
 
-    assert manifest["requirements"]["architecture"] in (
+    assert manifest["requirements"]["machine"] in (
         "any",
-        platform.architecture()[0],
-    ), f'incompatible architecture: \'{manifest["requirements"]["architecture"]}\''
+        platform.machine(),
+    ), f'incompatible machine: \'{manifest["requirements"]["machine"]}\''
 
     compiler = manifest["requirements"]["compiler"]
 

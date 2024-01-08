@@ -7,7 +7,7 @@
   },
   "requirements": {
     "system": "any",
-    "architecture": "any",
+    "machine": "any",
     "compiler": {
       "name": "freepascal",
       "version": ">=3.0.0"
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "common": {
-      "pasHelloWorld": "file:///../pasHelloWorld/build/pasHelloWorld-0.0.1-any-any-freepascal-gte3.0.0.art"
+      "pasHelloWorld": "0.0.2"
     },
     "dev": {}
   }

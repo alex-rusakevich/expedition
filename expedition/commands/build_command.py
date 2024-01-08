@@ -56,7 +56,7 @@ def build_command(args: Namespace):
             name=expedition_file["artifact"]["name"],
             version=expedition_file["artifact"]["version"],
             platform=expedition_file["requirements"]["system"],
-            machine=expedition_file["requirements"]["architecture"],
+            machine=expedition_file["requirements"]["machine"],
             compiler=expedition_file["requirements"]["compiler"]["name"],
             comp_ver=comp_sign_to_latin(
                 str(expedition_file["requirements"]["compiler"]["version"])
