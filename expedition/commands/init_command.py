@@ -12,6 +12,7 @@ def init_command(args: Namespace):
         "artifact": {
             "name": "example",
             "version": "0.0.1",
+            "unit_root": ".",
             "description": "",
             "homepage": "",
             "author": "",

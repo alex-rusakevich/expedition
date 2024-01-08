@@ -13,8 +13,8 @@ from expedition.util import *
 
 load_dotenv("./.env", verbose=True)
 
-MANIFEST_FILE_PATH = "./artifact.json"
-PASCAL_MODULES_DIR = "./pascal_modules"
+MANIFEST_FILE_PATH = os.path.join(".", "artifact.json")
+PASCAL_MODULES_DIR = os.path.join(".", "pascal_modules")
 
 REPO_URL = "https://raw.githubusercontent.com/alex-rusakevich/archaelogical/main/"
 CHUNK_SIZE = 1

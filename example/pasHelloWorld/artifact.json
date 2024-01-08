@@ -3,6 +3,7 @@
     "name": "pasHelloWorld",
     "version": "0.0.3",
     "description": "A simple hello world artifact",
+    "unit_root": ".",
     "homepage": "https://github.com/alex-rusakevich/expedition",
     "author": "Alexander Rusakevich"
   },

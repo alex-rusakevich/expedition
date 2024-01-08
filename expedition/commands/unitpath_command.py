@@ -5,6 +5,8 @@ from argparse import Namespace
 from expedition.settings import *
 from expedition.util import *
 
+from .install_command import *
+
 
 def unitpath_command(args: Namespace):
     if not os.path.exists(MANIFEST_FILE_PATH):
@@ -14,13 +16,16 @@ def unitpath_command(args: Namespace):
     manifest = json.load(open(MANIFEST_FILE_PATH, "r", encoding="utf-8"))
     dep_folders = []
 
-    for k, _ in manifest["dependencies"]["common"].items():
-        dep_folders.append(os.path.join(PASCAL_MODULES_DIR, k))
+    prepare_dependency_list(manifest["dependencies"], mode=args.mode, silent=True)
+    global dependencies_to_install
 
-    if args.mode == "dev":
-        for k, _ in manifest["dependencies"]["dev"].items():
-            dep_folders.append(os.path.join(PASCAL_MODULES_DIR, k))
+    for dep, _ in dependencies_to_install:
+        dep_manifest = json.load(
+            open(os.path.join(PASCAL_MODULES_DIR, dep, "artifact.json"))
+        )
+        dep_unitpath_root = dep_manifest["artifact"].get("unit_root", ".")
+        dep_folders.append(os.path.join(PASCAL_MODULES_DIR, dep, dep_unitpath_root))
 
-    dep_folders = tuple(os.path.normpath(p) for p in dep_folders)
+    dep_folders = set(os.path.normpath(p) for p in dep_folders)
 
     print(";".join(dep_folders))
