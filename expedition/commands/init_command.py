@@ -13,14 +13,15 @@ def init_command(args: Namespace):
             "name": "example",
             "version": "0.0.1",
             "description": "",
+            "homepage": "",
             "author": "",
         },
         "requirements": {
             "platform": "any",
             "machine": "any",
             "compiler": {
-                "name": "freepascal",
-                "version": None,
+                "name": "any",
+                "version": "any",
             },
         },
         "dependencies": {"common": {}, "dev": {}},
@@ -40,15 +41,7 @@ Run `exp del` to remove all the expedition's files"
 
     basic_file["artifact"]["author"] = ask_for("Artifact's author", "")
     basic_file["artifact"]["description"] = ask_for("Artifact's description", "")
-
-    basic_file["requirements"]["compiler"]["name"] = ask_for(
-        f"What is the compiler of your project?",
-        "freepascal",
-        AVAILABLE_COMPILERS.keys(),
-    )
-    basic_file["requirements"]["compiler"]["version"] = ask_for(
-        "Compiler version", None
-    )
+    basic_file["artifact"]["homepage"] = ask_for("Artifact's homepage", "")
 
     json.dump(basic_file, open(MANIFEST_FILE_PATH, "w", encoding="utf-8"), indent=2)
     pathlib.Path(PASCAL_MODULES_DIR).mkdir(exist_ok=True)

@@ -3,6 +3,7 @@
     "name": "helloWorld",
     "version": "0.0.1",
     "description": "An app using the libHelloWorld as a module",
+    "homepage": "https://github.com/alex-rusakevich/expedition",
     "author": "Alexander Rusakevich"
   },
   "requirements": {

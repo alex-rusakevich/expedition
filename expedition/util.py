@@ -1,6 +1,8 @@
+import os
+import pathlib
 import posixpath
 import re
-from typing import Optional, Sequence
+from typing import Collection, Optional, Sequence
 from urllib.parse import urljoin
 
 import requests
@@ -145,15 +147,35 @@ def ver_to_str(version: tuple) -> str:
     return ".".join(tuple(str(num) for num in version))
 
 
-def joinurls(*urls):
+def joinurls(*urls) -> str:
+    """Join url paths like `os.path.join` does to file paths
+
+    :return: joined url
+    :rtype: str
+    """
     return urljoin(urls[0], posixpath.join(*urls[1:]))
 
 
 def download_by_parts(url: str, output_path: str) -> int:
+    """Iterator which downloads files by chunks, chunk size is specified in `settings.CHUNK_SIZE`
+
+    :param url: file URL
+    :type url: str
+    :param output_path: desired local file path
+    :type output_path: str
+    :raises Exception: download has an error HTTP status_code
+    :return: bytes downloaded during iteration
+    :rtype: int
+    :yield: bytes downloaded during iteration
+    :rtype: Iterator[int]
+    """
+
     response = requests.get(url, stream=True)
 
     if response.status_code != 200:
         raise Exception(f"Unable to download artifact (code {response.status_code})")
+
+    pathlib.Path(os.path.dirname(output_path)).mkdir(parents=True, exist_ok=True)
 
     with open(output_path, "wb") as f:
         for chunk in response.iter_content(chunk_size=es.CHUNK_SIZE):
@@ -162,10 +184,23 @@ def download_by_parts(url: str, output_path: str) -> int:
 
 
 def get_file_size(url: str) -> int:
-    head_resp = requests.request("HEAD", url, headers={"Accept-Encoding": "identity"})
+    """Get remote file real size
 
+    :param url: url path
+    :type url: str
+    :return: remote file size in bytes
+    :rtype: int
+    """
+    head_resp = requests.request("HEAD", url, headers={"Accept-Encoding": "identity"})
     return int(head_resp.headers["content-length"])
 
 
-def gen_stairs(lvl: int = 0):
+def gen_stairs(lvl: int = 0) -> str:
+    """Get a "stair" ("└──") moved right depending on `lvl`
+
+    :param lvl: "stair" level, horizontal position, defaults to 0
+    :type lvl: int, optional
+    :return: "stair" with left spacing *(but no right spacing)*
+    :rtype: str
+    """
     return (" " * 4 * lvl) + "└──"

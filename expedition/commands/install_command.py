@@ -99,7 +99,7 @@ def install_command(args: Namespace):
 
         print("Preparing the dependency list...")
         prepare_dependency_list(manifest["dependencies"], args.mode)
-        print("Done!", len(dependencies_to_install), "found.")
+        print("Done!", len(dependencies_to_install), "dependency(es) found.")
 
         prepare_dependencies()
         install_dependencies()
