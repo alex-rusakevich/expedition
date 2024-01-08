@@ -51,6 +51,17 @@ def main():
         default="local",
     )
 
+    list_subp = subparsers.add_parser(
+        "list", help="list packages, versions and artifacts"
+    )
+    list_subp.set_defaults(func=expedition.commands.list_command)
+    list_subp.add_argument(
+        "mode",
+        type=str,
+        choices=["available"],
+        help="list files mode",
+    )
+
     build_subp = subparsers.add_parser("build", help="build an artifact .art file")
     build_subp.set_defaults(func=expedition.commands.build_command)
     build_subp.add_argument(

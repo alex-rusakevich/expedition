@@ -7,10 +7,6 @@ from expedition.util import *
 
 
 def clear_command(args: Namespace):
-    if not os.path.exists(MANIFEST_FILE_PATH):
-        print("The expedition manifest file does not exist, stopping...")
-        return
-
     is_sure = args.force or (
         ask_for(
             f"Warning: you are about to delete the expedition {args.mode} files! Are you sure?",
@@ -25,6 +21,10 @@ def clear_command(args: Namespace):
         return
 
     if args.mode == "local":
+        if not os.path.exists(MANIFEST_FILE_PATH):
+            print("The expedition manifest file does not exist, stopping...")
+            return
+
         os.remove(MANIFEST_FILE_PATH)
 
         if os.path.exists(PASCAL_MODULES_DIR):

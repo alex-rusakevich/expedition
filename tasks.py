@@ -11,6 +11,8 @@ def build(context, folder_mode=False):
 --name=exp \
 --noconfirm {"--onefile" if not folder_mode else ""} \
 --icon NONE \
+--add-data "./expedition/VERSION.txt;expedition/" \
+--collect-data grapheme \
 "./exp.py"'
     )
 

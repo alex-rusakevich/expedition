@@ -16,7 +16,9 @@ from expedition.validator import validate_manifest
 dependencies_to_install = []
 
 
-def prepare_dependency_list(dependencies: dict, mode: Literal["dev", "prod"] = "dev"):
+def prepare_dependency_list(
+    dependencies: dict, mode: Literal["dev", "prod"] = "dev", silent=False
+):
     global dependencies_to_install
 
     arts = dependencies["common"].items()
@@ -31,7 +33,7 @@ def prepare_dependency_list(dependencies: dict, mode: Literal["dev", "prod"] = "
         if path_or_ver.startswith("file:///"):  # local
             art_path = path_or_ver.replace("file:///", "", 1)
         else:  # repo
-            art_path = retrieve_package(name, path_or_ver)
+            art_path = retrieve_package(name, path_or_ver, silent)
 
         with zipfile.ZipFile(
             art_path, "r", compression=zipfile.ZIP_DEFLATED, compresslevel=6

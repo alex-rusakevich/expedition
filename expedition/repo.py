@@ -11,7 +11,7 @@ def is_file_short_name_suits(file_short_name: str) -> bool:
     return True
 
 
-def retrieve_package(name: str, desired_ver: str) -> str:
+def retrieve_package(name: str, desired_ver: str, silent=False) -> str:
     """Find and download to cache or get from it a remote package and return path to .art file
 
     :param name: package name
@@ -46,7 +46,9 @@ def retrieve_package(name: str, desired_ver: str) -> str:
                         f"{name}-{pkg_ver}-{file_short_name}.art",
                     )
 
-                    print(f"{gen_stairs(0)} Suitable version is '{name}': '{pkg_ver}'")
+                    not silent and print(
+                        f"{gen_stairs(0)} Suitable version is '{name}': '{pkg_ver}'"
+                    )
 
         if file_url:
             break
@@ -58,12 +60,12 @@ def retrieve_package(name: str, desired_ver: str) -> str:
 
     if not (os.path.exists(file_cache_path) and os.path.isfile(file_cache_path)):
         file_size = get_file_size(file_url)
-        print(f"{gen_stairs(1)} Downloading '{file_url}'...")
+        not silent and print(f"{gen_stairs(1)} Downloading '{file_url}'...")
 
         with alive_bar(int(file_size / CHUNK_SIZE)) as bar:
             for _ in download_by_parts(file_url, file_cache_path):
                 bar()
     else:
-        print(f"{gen_stairs(1)} The file was found in cache.")
+        not silent and print(f"{gen_stairs(1)} The file was found in cache.")
 
     return file_cache_path
