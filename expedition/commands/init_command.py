@@ -44,7 +44,7 @@ Run `exp del` to remove all the expedition's files"
     basic_file["requirements"]["compiler"]["name"] = ask_for(
         f"What is the compiler of your project?",
         "freepascal",
-        AVAILABLE_COMPILERS,
+        AVAILABLE_COMPILERS.keys(),
     )
     basic_file["requirements"]["compiler"]["version"] = ask_for(
         "Compiler version", None

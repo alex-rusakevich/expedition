@@ -1,12 +1,13 @@
 import json
 import os
 import pathlib
+import time
 import zipfile
 from argparse import Namespace
-from uu import encode
 
 from expedition.settings import *
 from expedition.util import *
+from expedition.validator import validate_manifest
 
 dep_count = 0
 
@@ -20,7 +21,7 @@ def install_dependencies(dependencies: dict, mode: str = "dev"):
         arts = {**arts, **dependencies["dev"]}
 
     for name, path_or_ver in arts.items():
-        print(f"Installing '{name}'='{path_or_ver}'...", end=" ")
+        print(f"Installing '{name}': '{path_or_ver}'...", end=" ")
         module_folder = ""
 
         if path_or_ver.startswith("file:///"):
@@ -31,6 +32,8 @@ def install_dependencies(dependencies: dict, mode: str = "dev"):
             with zipfile.ZipFile(
                 art_path, "r", compression=zipfile.ZIP_DEFLATED, compresslevel=6
             ) as file:
+                validate_manifest(json.loads(file.read("artifact.json").decode("utf8")))
+
                 file.extractall(module_folder)
 
         dependencies = json.load(
@@ -44,6 +47,7 @@ def install_dependencies(dependencies: dict, mode: str = "dev"):
 
 
 def install_command(args: Namespace):
+    time_start = time.time()
     global dep_count
 
     if not os.path.exists(MANIFEST_FILE_PATH):
@@ -58,4 +62,7 @@ def install_command(args: Namespace):
 
         install_dependencies(manifest["dependencies"], args.mode)
 
-        print(f"All the {dep_count} dependencies where installed successfully")
+    time_spent = time.time() - time_start
+    print(
+        f"All the {dep_count} dependencies where installed successfully in {time_spent:.4f} seconds"
+    )

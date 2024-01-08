@@ -6,8 +6,8 @@
     "author": "Alexander Rusakevich"
   },
   "requirements": {
-    "platform": "any",
-    "machine": "any",
+    "system": "any",
+    "architecture": "any",
     "compiler": {
       "name": "freepascal",
       "version": ">=3.0.0"

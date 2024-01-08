@@ -8,6 +8,7 @@ from argparse import Namespace
 
 from expedition.settings import *
 from expedition.util import *
+from expedition.validator import validate_manifest
 
 
 def build_command(args: Namespace):
@@ -47,12 +48,15 @@ def build_command(args: Namespace):
     time_start = time.time()
 
     expedition_file = json.load(open(MANIFEST_FILE_PATH, "r", encoding="utf-8"))
+
+    validate_manifest(expedition_file)
+
     output_file_path = (
         "{name}-{version}-{platform}-{machine}-{compiler}-{comp_ver}.art".format(
             name=expedition_file["artifact"]["name"],
             version=expedition_file["artifact"]["version"],
-            platform=expedition_file["requirements"]["platform"],
-            machine=expedition_file["requirements"]["machine"],
+            platform=expedition_file["requirements"]["system"],
+            machine=expedition_file["requirements"]["architecture"],
             compiler=expedition_file["requirements"]["compiler"]["name"],
             comp_ver=comp_sign_to_latin(
                 str(expedition_file["requirements"]["compiler"]["version"])
