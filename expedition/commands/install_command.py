@@ -48,7 +48,7 @@ def prepare_dependencies():
 
     with alive_bar(len(dependencies_to_install)) as bar:
         for i, (name, path_or_ver) in enumerate(dependencies_to_install):
-            print(f"Preparing '{name}': '{path_or_ver}'...", end=" ")
+            print(f"Preparing '{name}': '{path_or_ver}'...")
             art_path = ""
 
             if path_or_ver.startswith("file:///"):  # local
@@ -58,7 +58,7 @@ def prepare_dependencies():
 
             dependencies_to_install[i] = (name, art_path)
 
-            print("Done!")
+            print("Done preparing artifact files!")
             bar()
     ...
 

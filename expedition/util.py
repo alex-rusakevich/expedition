@@ -165,3 +165,7 @@ def get_file_size(url: str) -> int:
     head_resp = requests.request("HEAD", url, headers={"Accept-Encoding": "identity"})
 
     return int(head_resp.headers["content-length"])
+
+
+def gen_stairs(lvl: int = 0):
+    return (" " * 4 * lvl) + "└──"

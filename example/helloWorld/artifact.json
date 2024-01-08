@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "common": {
-      "pasHelloWorld": "0.0.2"
+      "pasHelloWorld": ">=0.0.1"
     },
     "dev": {}
   }
