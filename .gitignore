@@ -3,6 +3,7 @@ build/
 .venv/
 __pycache__/
 dist/
+.expedition/
 
 *.o
 *.exe

@@ -114,3 +114,25 @@ def comp_sign_to_latin(version_cond: str, vice_versa=False) -> str:
                 break
 
     return version_cond
+
+
+def str_to_ver(string_in: str) -> tuple:
+    """Convert a string with version to a tuple
+
+    :param string_in: string with version, e.g. `"0.0.1.alpha"`
+    :type string_in: str
+    :return: tuple with version, e.g. `(0,0,1,"alpha")`
+    :rtype: tuple
+    """
+    return tuple(int(num) if num.isnumeric() else num for num in string_in.split("."))
+
+
+def ver_to_str(version: tuple) -> str:
+    """Convert version tuple to a version string
+
+    :param version: version tuple, e.g. `(0,0,1,"alpha")`
+    :type version: tuple
+    :return: resulting version string, e.g. `"0.0.1.alpha"`
+    :rtype: str
+    """
+    return ".".join(tuple(str(num) for num in version))

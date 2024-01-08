@@ -7,6 +7,7 @@ import argparse
 
 import expedition
 import expedition.commands
+from expedition.settings import *
 
 
 def main():
@@ -74,7 +75,8 @@ def main():
     args = parser.parse_args()
 
     if args.version:
-        print(expedition.__version__)
+        print(f"expedition v{expedition.__version__}")
+        print_detected_compilers()
         sys.exit()
 
     if hasattr(args, "func"):
